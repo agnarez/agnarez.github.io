@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>agnarez — home</title>
+<meta name="description" content="agnarez — developer, researcher, Bitcoin puzzle hunter. Home of the Bitcoin Puzzle Hunt and the Burner Wallet.">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0b0e14; color: #e6e9f0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    padding: 56px 20px 32px;
+  }
+  .wrap { width: 100%; max-width: 760px; }
+  header { text-align: center; margin-bottom: 44px; }
+  h1 { font-size: 44px; letter-spacing: -1px; }
+  h1 span { color: #f5a623; }
+  .tag { margin-top: 10px; color: #9aa3b2; font-size: 16px; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+  .card {
+    background: #141926; border: 1px solid #232a3a; border-radius: 16px;
+    padding: 24px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .card h2 { font-size: 21px; }
+  .card p { color: #9aa3b2; font-size: 14.5px; line-height: 1.55; flex: 1; }
+  .card a { color: #6ea8ff; text-decoration: none; font-size: 14.5px; }
+  .card a:hover { text-decoration: underline; }
+  .links { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+  .pill {
+    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .4px;
+    color: #0b0e14; background: #f5a623; border-radius: 999px; padding: 3px 10px; width: max-content;
+  }
+  .pill.green { background: #3ecf6f; }
+  .profiles { margin-top: 36px; text-align: center; color: #9aa3b2; font-size: 14.5px; line-height: 2; }
+  .profiles a { color: #6ea8ff; text-decoration: none; margin: 0 8px; }
+  .profiles a:hover { text-decoration: underline; }
+  footer { margin-top: 44px; color: #5c6675; font-size: 13px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>agnarez<span>.</span></h1>
+    <p class="tag">Developer, researcher &amp; Bitcoin puzzle hunter — building free, in the open.</p>
+  </header>
+
+  <div class="cards">
+    <div class="card">
+      <span class="pill">LIVE — RUNNING</span>
+      <h2>Bitcoin Puzzle Hunt</h2>
+      <p>Hunting the five known pubkey-exposed Bitcoin puzzles (#140, #145, #150, #155, #160) — 75 BTC combined. Scanner live on puzzle #140, checkpointed and watched around the clock.</p>
+      <div class="links">
+        <a href="https://agnarez.github.io/bitcoin-puzzle-hunt/">→ Hunt website</a>
+        <a href="https://muse.ai/s/bitcoin-puzzle-hunt-live-progress-qd6xa6jvxxlrq/Vk-N8ZR5QNjnJA0mbiR_MXl0W1Ly2wczzIq2PG9ofR4">→ Live progress</a>
+        <a href="https://muse.ai/s/bitcoin-puzzle-hunt-research-xtxu6xa8ubzdgx0/axoghp0rB4ISigDvMiSogBS0IxjdLZeOHVcGPvN2LQQ">→ Research &amp; solver code</a>
+        <a href="https://github.com/agnarez/bitcoin-puzzle-hunt">→ GitHub repo</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="pill green">TESTNET — LIVE</span>
+      <h2>Burner Wallet</h2>
+      <p>Multi-chain burner wallet with a dashboard, faucet top-ups, and free on-chain tools — sniper, soul-bound names, and the $AGNA token launcher. Testnet only, $0.</p>
+      <div class="links">
+        <a href="https://agnarez.github.io/burner-wallet/">→ Wallet website</a>
+        <a href="https://github.com/agnarez/burner-wallet">→ GitHub repo</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="profiles">
+    <a href="https://github.com/agnarez">GitHub</a>
+    <a href="https://x.com/agnarez_">X</a>
+    <a href="https://t.me/agnarez">Telegram</a>
+    <a href="https://linktr.ee/agnarez">Linktree</a>
+  </div>
+
+  <footer>© 2026 agnarez — built free, in the open.</footer>
+</div>
+</body>
+</html>
