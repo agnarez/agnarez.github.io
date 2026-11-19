@@ -23,7 +23,7 @@
   <h1>Dapp Browser</h1>
   <p id="status">Finding the live browser…</p>
   <div id="setup" hidden>
-    <p>First visit: paste your viewer link once. The token is saved only in <b>this</b> browser (localStorage) — it is never sent to, or stored on, this site.</p>
+    <p>First visit: paste your viewer link once. The token is saved only in <b>this</b> browser (localStorage) — it is never sent to, or stored on, this site.<br><br>It is the link from your chat with agna.muse that looks like <b>https://….app.lhr.life/view?token=…</b> — <b>not</b> the elyon.network quest page link.</p>
     <input id="link" placeholder="https://….app.lhr.life/view?token=…" autocomplete="off">
     <br><button id="save">Save &amp; open</button>
   </div>
@@ -74,7 +74,11 @@
         } catch(e) { t = v; }
         // Accept a bare token too (48 hex chars).
         if(!t && /^[0-9a-f]{32,}$/i.test(v)) t = v;
-        if(!t){ status.textContent = 'Could not find a token in that link — paste the full viewer link.'; return; }
+        if(!t){
+          if(/elyon\.network/i.test(v)){ status.textContent = 'That is the Elyon quest page link, not the viewer link. Paste the viewer link from your chat with agna.muse — it looks like https://….app.lhr.life/view?token=…'; }
+          else { status.textContent = 'Could not find a token in that link — paste the full viewer link from your chat with agna.muse (https://….app.lhr.life/view?token=…).'; }
+          return;
+        }
         try { localStorage.setItem('dappViewerToken', t); } catch(e) {}
         location.href = viewerUrl(info.domain, t);
       };
