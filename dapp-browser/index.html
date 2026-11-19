@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dapp Browser — agnarez</title>
+<style>
+  body{margin:0;background:#0b0f14;color:#e6edf3;font-family:system-ui,-apple-system,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:20px;box-sizing:border-box}
+  .wrap{max-width:520px;width:100%;text-align:center}
+  h1{font-size:26px;margin:0 0 8px}
+  p{color:#9ca3af;line-height:1.5}
+  #status{color:#e6edf3;font-size:17px}
+  .btn{display:inline-block;margin-top:18px;padding:14px 28px;border-radius:10px;background:#2563eb;color:#fff;text-decoration:none;font-size:18px;font-weight:600}
+  .btn:hover{background:#1d4ed8}
+  input{width:100%;box-sizing:border-box;padding:12px;border-radius:8px;border:1px solid #334155;background:#1f2937;color:#e6edf3;font-size:15px;margin-top:12px}
+  button{margin-top:12px;padding:12px 24px;border-radius:8px;border:1px solid #2563eb;background:#2563eb;color:#fff;font-size:16px;cursor:pointer}
+  .note{font-size:13px;margin-top:28px}
+  .reset{background:none;border:none;color:#6b7280;font-size:13px;cursor:pointer;margin-top:16px;text-decoration:underline;padding:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Dapp Browser</h1>
+  <p id="status">Finding the live browser…</p>
+  <div id="setup" hidden>
+    <p>First visit: paste your viewer link once. The token is saved only in <b>this</b> browser (localStorage) — it is never sent to, or stored on, this site.</p>
+    <input id="link" placeholder="https://….app.lhr.life/view?token=…" autocomplete="off">
+    <br><button id="save">Save &amp; open</button>
+  </div>
+  <a id="open" class="btn" hidden href="#">Open dapp browser →</a>
+  <br><button id="reset" class="reset" hidden>Forget the saved token</button>
+  <p class="note">A browser on my VM with the burner wallet built in. Testnet only — every signature and transaction needs your approval first. Never paste a seed phrase anywhere.</p>
+</div>
+<script>
+(function(){
+  var status = document.getElementById('status');
+  var openBtn = document.getElementById('open');
+  var resetBtn = document.getElementById('reset');
+  var setup = document.getElementById('setup');
+
+  function viewerUrl(domain, token){
+    return 'https://' + domain + '/view?token=' + encodeURIComponent(token);
+  }
+
+  resetBtn.onclick = function(){
+    try { localStorage.removeItem('dappViewerToken'); } catch(e) {}
+    location.reload();
+  };
+
+  fetch('tunnel.json', {cache: 'no-store'}).then(function(r){
+    if(!r.ok) throw new Error('tunnel.json missing (HTTP ' + r.status + ')');
+    return r.json();
+  }).then(function(info){
+    if(!info || !info.domain) throw new Error('tunnel.json has no domain');
+    var token = null;
+    try { token = localStorage.getItem('dappViewerToken'); } catch(e) {}
+    var ageMin = null;
+    if(info.updated){
+      var age = Date.now() - Date.parse(info.updated);
+      if(!isNaN(age)) ageMin = Math.round(age / 60000);
+    }
+    var staleNote = (ageMin !== null && ageMin > 30)
+      ? ' (tunnel info is ' + ageMin + ' min old — if it fails, wait a couple of minutes; the watchdog refreshes it every 5 min)'
+      : '';
+    if(!token){
+      status.textContent = 'First visit: paste your viewer link once to save it in this browser.';
+      setup.hidden = false;
+      document.getElementById('save').onclick = function(){
+        var v = document.getElementById('link').value.trim();
+        var t = '';
+        try {
+          var u = new URL(v);
+          t = u.searchParams.get('token') || '';
+        } catch(e) { t = v; }
+        // Accept a bare token too (48 hex chars).
+        if(!t && /^[0-9a-f]{32,}$/i.test(v)) t = v;
+        if(!t){ status.textContent = 'Could not find a token in that link — paste the full viewer link.'; return; }
+        try { localStorage.setItem('dappViewerToken', t); } catch(e) {}
+        location.href = viewerUrl(info.domain, t);
+      };
+      return;
+    }
+    var url = viewerUrl(info.domain, token);
+    openBtn.href = url;
+    openBtn.hidden = false;
+    resetBtn.hidden = false;
+    status.textContent = 'Opening the live browser…' + staleNote;
+    setTimeout(function(){ location.href = url; }, 700);
+  }).catch(function(err){
+    status.textContent = 'Tunnel info is not available yet — the watchdog publishes it every 5 minutes. Please try again shortly. (' + err.message + ')';
+  });
+})();
+</script>
+</body>
+</html>
